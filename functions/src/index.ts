@@ -22,7 +22,7 @@ export const createUser = functions.https.onCall(async (data) => {
 
     if (!snapshot.empty) {
       // Username is already taken
-      return {result: "Username is already taken"};
+      return {result: "USERNAME_TAKEN"};
     } else {
       // Create a new user account in Firebase Authentication
       const userCredential = await admin.auth().createUser({
@@ -45,21 +45,20 @@ export const createUser = functions.https.onCall(async (data) => {
 
       await userRef.set(newUser);
 
-      return {result: "User created successfully"};
+      return {result: "SUCCESS"};
     }
   } catch (error: any) {
     // Handle any errors that occur during the process
     console.error(error);
 
     if (error.code === "auth/weak-password") {
-      // Handle Firebase Authentication errors (weak password)
-      return {error: "The provided password is too weak. "};
-    } else if (error.code === "auth/email-already-in-use") {
-      // Handle Firebase Authentication errors (email already in use)
-      return {error: "The provided email address is already in use."};
+      return {result: "WEAK_PASSWORD"};
+    } else if (error.code === "auth/email-already-exists") {
+      return {result: "EMAIL_ALREADY_EXISTS"};
+    } else if (error.code === "unavailable") {
+      return {result: "SERVICE_UNAVAILABLE"};
     } else {
-      // Handle Firestore errors (all other errors)
-      return {error: "An error occurred while creating the user"};
+      return {result: "REQUEST_FAILED"};
     }
   }
 });
