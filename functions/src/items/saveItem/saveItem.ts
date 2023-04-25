@@ -13,6 +13,7 @@ export const saveItem = functions.https.onCall(async (data) => {
     // Create a reference to a new document with an auto-generated ID
     const itemRef = admin.firestore().collection("items").doc();
     const id = itemRef.id;
+    const timestamp = admin.firestore.FieldValue.serverTimestamp();
 
     // Parse the JSON data into an Item object
     const item: Item = {
@@ -22,6 +23,7 @@ export const saveItem = functions.https.onCall(async (data) => {
       description: json.description,
       state: State[json.state.toUpperCase() as keyof typeof State],
       category: Category[json.category.toUpperCase() as keyof typeof Category],
+      timestamp,
     };
 
     console.log("Item id:" + id);
