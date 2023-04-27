@@ -66,7 +66,7 @@ interface AddItemData {
 
 async function addItemToUser(data: AddItemData) {
   const {itemId, uid} = data;
-  const userRef = admin.firestore().collection("Users").doc(uid);
+  const userRef = admin.firestore().collection("users").doc(uid);
 
   try {
     const userDoc = await userRef.get();

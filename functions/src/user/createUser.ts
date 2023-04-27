@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import {defaultProfilePic} from "./profilePicUri";
 
 export const createUser = functions.https.onCall(async (data) => {
   const username = data.username;
@@ -10,7 +11,7 @@ export const createUser = functions.https.onCall(async (data) => {
     // Check if the username is already taken in the Users collection
     const snapshot = await admin
       .firestore()
-      .collection("Users")
+      .collection("users")
       .where("username", "==", username)
       .get();
 
@@ -28,13 +29,14 @@ export const createUser = functions.https.onCall(async (data) => {
       const newUser = {
         id: userCredential.uid,
         username: username,
+        profilePic: defaultProfilePic,
         email: email,
         joinDate: userCredential.metadata.creationTime,
       };
 
       const userRef = admin
         .firestore()
-        .collection("Users")
+        .collection("users")
         .doc(userCredential.uid);
 
       await userRef.set(newUser);
