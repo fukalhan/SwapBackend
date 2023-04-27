@@ -6,6 +6,7 @@ export const createUser = functions.https.onCall(async (data) => {
   const username = data.username;
   const email = data.email;
   const password = data.password;
+  const fcmToken = data.fcmToken;
 
   try {
     // Check if the username is already taken in the Users collection
@@ -32,6 +33,7 @@ export const createUser = functions.https.onCall(async (data) => {
         profilePic: defaultProfilePic,
         email: email,
         joinDate: userCredential.metadata.creationTime,
+        fcmToken: fcmToken,
       };
 
       const userRef = admin
