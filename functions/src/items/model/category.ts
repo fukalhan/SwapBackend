@@ -13,5 +13,6 @@ export enum Category {
     SHOES = "SHOES",
     SPORT_EQUIPMENT = "SPORT_EQUIPMENT",
     GARDEN_EQUIPMENT = "GARDEN_EQUIPMENT",
+    PLANTS = "PLANTS",
     OTHER = "OTHER"
 }
